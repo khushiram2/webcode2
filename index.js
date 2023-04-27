@@ -56,7 +56,15 @@ const client = await createConnection();
 // }
 
 //  start()
+app.post("/trigger", async (req,res)=>{
+try{
+await start2()
+await start3()
+res.send({message:"triggered"})
+}catch(e){console.log(e)
 
+}
+})
 
 // flipcart scrapping
 async function start2() {
@@ -105,29 +113,25 @@ async function start2() {
         }
 
     })
-    const check = await client
+    let querry=[]
+    for(let i=0;i<productDetails.length;i++){
+        querry.push({
+            updateOne:{
+                filter:{
+                    title:productDetails[i].title
+                },
+                update:{
+                    $set:{...productDetails[i]}
+                },
+                upsert:true
+            }
+        })
+    }
+    await client
         .db("webcode")
         .collection("flipcart")
-        .find({})
-        .toArray()
-    if (check.length == 0) {
-        await client
-            .db("webcode")
-            .collection("flipcart")
-            .insertMany(productDetails)
-    }
+        .bulkWrite(querry)
 
-    app.get("/flipcart", async (req, res) => {
-       try{ const sendingproductdata = await client
-            .db("webcode")
-            .collection("flipcart")
-            .find({})
-            .toArray()
-        res.send(sendingproductdata)}
-        catch(e){console.log(e)
-
-        }
-    })
     await browser.close()}
     catch(err){console.log(err)
 
@@ -135,6 +139,17 @@ async function start2() {
 
 }
 
+app.get("/flipcart", async (req, res) => {
+    try{ const sendingproductdata = await client
+         .db("webcode")
+         .collection("flipcart")
+         .find({})
+         .toArray()
+     res.send(sendingproductdata)}
+     catch(e){console.log(e)
+
+     }
+ })
 
 
 // snapdeal scrapping
@@ -179,39 +194,53 @@ async function start3() {
 
     })
 
-    const check = await client
-        .db("webcode")
-        .collection("snapdeal")
-        .find({})
-        .toArray()
-    if (check.length == 0) {
+    // const check = await client
+    //     .db("webcode")
+    //     .collection("snapdeal")
+    //     .find({})
+    //     .toArray()
+    // if (check.length == 0) {
+        let querry=[]
+        for(let i=0;i<productDetails.length;i++){
+            querry.push({
+                updateOne:{
+                    filter:{
+                        title:productDetails[i].title
+                    },
+                    update:{
+                        $set:{...productDetails[i]}
+                    },
+                    upsert:true
+                }
+            })
+        }
         await client
             .db("webcode")
             .collection("snapdeal")
-            .insertMany(productDetails)
-    }
+            .bulkWrite(querry)
+   
 
 
-    app.get("/snapdeal", async (req, res) => {
-      try{  const sendingproductdata = await client
-            .db("webcode")
-            .collection("snapdeal")
-            .find({})
-            .toArray()
-        res.send(sendingproductdata)
-    }
-        catch(err){console.log(err)
-        }
-    })
+
     await browser.close()}
     catch(err){console.log(err)
 
     }
 }
 
+app.get("/snapdeal", async (req, res) => {
+    try{  const sendingproductdata = await client
+          .db("webcode")
+          .collection("snapdeal")
+          .find({})
+          .toArray()
+      res.send(sendingproductdata)
+  }
+      catch(err){console.log(err)
+      }
+  })
+
 // refreshing it after 24hrs  
-start2()
-start3()
 
 
 app.listen(port, () => console.log("server started on", port))
