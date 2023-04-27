@@ -124,12 +124,12 @@ async function start2() {
             .find({})
             .toArray()
         res.send(sendingproductdata)}
-        catch{(err)=>console.log(err)
+        catch(e){console.log(e)
 
         }
     })
     await browser.close()}
-    catch{(err)=>console.log(err)
+    catch(err){console.log(err)
 
     }
 
@@ -198,12 +198,13 @@ async function start3() {
             .collection("snapdeal")
             .find({})
             .toArray()
-        res.send(sendingproductdata)}
-        catch{(err)=>console.log(err)
+        res.send(sendingproductdata)
+    }
+        catch(err){console.log(err)
         }
     })
     await browser.close()}
-    catch{(err)=>console.log(err)
+    catch(err){console.log(err)
 
     }
 }
