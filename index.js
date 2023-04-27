@@ -118,12 +118,15 @@ async function start2() {
     }
 
     app.get("/flipcart", async (req, res) => {
-        const sendingproductdata = await client
+       try{ const sendingproductdata = await client
             .db("webcode")
             .collection("flipcart")
             .find({})
             .toArray()
-        res.send(sendingproductdata)
+        res.send(sendingproductdata)}
+        catch{(err)=>console.log(err)
+
+        }
     })
     await browser.close()}
     catch{(err)=>console.log(err)
@@ -190,12 +193,14 @@ async function start3() {
 
 
     app.get("/snapdeal", async (req, res) => {
-        const sendingproductdata = await client
+      try{  const sendingproductdata = await client
             .db("webcode")
             .collection("snapdeal")
             .find({})
             .toArray()
-        res.send(sendingproductdata)
+        res.send(sendingproductdata)}
+        catch{(err)=>console.log(err)
+        }
     })
     await browser.close()}
     catch{(err)=>console.log(err)
