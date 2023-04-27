@@ -60,7 +60,7 @@ const client = await createConnection();
 
 // flipcart scrapping
 async function start2() {
-    const browser = await puppeteer.launch()
+   try{ const browser = await puppeteer.launch()
     const page = await browser.newPage()
     await page.goto("https://www.flipkart.com/televisions/pr?sid=ckf%2Cczl&p%5B%5D=facets.brand%255B%255D%3DMi&otracker=categorytree&p%5B%5D=facets.serviceability%5B%5D%3Dtrue&p%5B%5D=facets.availability%255B%255D%3DExclude%2BOut%2Bof%2BStock&otracker=nmenu_sub_TVs%20%26%20Appliances_0_Mi")
     const price = await page.evaluate(() => {
@@ -125,7 +125,10 @@ async function start2() {
             .toArray()
         res.send(sendingproductdata)
     })
-    await browser.close()
+    await browser.close()}
+    catch{(err)=>console.log(err)
+
+    }
 
 }
 
@@ -133,7 +136,7 @@ async function start2() {
 
 // snapdeal scrapping
 async function start3() {
-    const browser = await puppeteer.launch()
+    try{const browser = await puppeteer.launch()
     const page = await browser.newPage()
     await page.goto("https://www.snapdeal.com/products/electronics-bluetooth-speakers?sort=plrty")
     const price = await page.evaluate(() => {
@@ -194,7 +197,10 @@ async function start3() {
             .toArray()
         res.send(sendingproductdata)
     })
-    await browser.close()
+    await browser.close()}
+    catch{(err)=>console.log(err)
+
+    }
 }
 
 // refreshing it after 24hrs  
